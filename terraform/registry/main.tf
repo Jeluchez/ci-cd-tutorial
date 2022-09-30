@@ -17,8 +17,7 @@ variable "aws_region" {
 
 provider "aws" {
   region     = var.aws_region
-  access_key = "AKIARFWMUUJ45NUQ4EW2"
-  secret_key = "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"
+ shared_credentials_files = ["/Users/LABRADOR/.aws/credentials"]
 }
 
 resource "aws_ecr_repository" "my_ecr_repo" {
@@ -29,9 +28,6 @@ resource "aws_ecr_repository" "my_ecr_repo" {
     scan_on_push = true
   }
 }
-
-
-
 # output "registry_id" {
 #   description = "The account ID of the registry holding the repository."
 #   value = aws_ecr_repository.my_ecr_repo.registry_id
