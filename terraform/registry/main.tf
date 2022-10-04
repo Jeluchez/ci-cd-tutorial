@@ -21,7 +21,7 @@ variable "aws_region" {
 
 provider "aws" {
   region                   = var.aws_region
-  shared_credentials_files = ["/Users/joseluis.sanchez/.aws/credentials"]
+  shared_credentials_files = ["/Users/LABRADOR/.aws/credentials"]
 }
 resource "aws_ecr_repository" "my_ecr_repo" {
   name                 = var.registry_name
