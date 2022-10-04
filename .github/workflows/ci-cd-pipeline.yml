@@ -29,8 +29,7 @@ jobs:
 
           terraform init \
           -backend-config=config/backend-config.tf \
-          -reconfigure \
-          -input=false
+          -reconfigure 
 
           terraform apply \
           -var-file=vars.tfvars \
