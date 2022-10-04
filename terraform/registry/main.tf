@@ -20,8 +20,8 @@ variable "aws_region" {
 }
 
 provider "aws" {
-  region                   = var.aws_region
-  shared_credentials_files = ["/Users/joseluis.sanchez/.aws/credentials"]
+  region = var.aws_region
+  # shared_credentials_files = ["/Users/joseluis.sanchez/.aws/credentials"]
 }
 resource "aws_ecr_repository" "my_ecr_repo" {
   name                 = var.registry_name
@@ -31,17 +31,17 @@ resource "aws_ecr_repository" "my_ecr_repo" {
     scan_on_push = true
   }
 }
-# output "registry_id" {
-#   description = "The account ID of the registry holding the repository."
-#   value = aws_ecr_repository.my_ecr_repo.registry_id
-# }
+output "registry_id" {
+  description = "The account ID of the registry holding the repository."
+  value       = aws_ecr_repository.my_ecr_repo.registry_id
+}
 
-# output "repository_name" {
-#   description = "The name of the repository."
-#   value = aws_ecr_repository.my_ecr_repo.name
-# }
+output "repository_name" {
+  description = "The name of the repository."
+  value       = aws_ecr_repository.my_ecr_repo.name
+}
 
-# output "repository_url" {
-#   description = "The URL of the repository."
-#   value = aws_ecr_repository.my_ecr_repo.repository_url
-# }
+output "repository_url" {
+  description = "The URL of the repository."
+  value       = aws_ecr_repository.my_ecr_repo.repository_url
+}
