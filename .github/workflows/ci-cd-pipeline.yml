@@ -57,7 +57,7 @@ jobs:
     - name: Image build and push
       id: docker-build
       run: |
-        export IMAGE_TAG=$(git rev-parse --short HEAD)
+        export IMAGE_TAG=sha-$(git rev-parse --short HEAD)
         
         echo "$IMAGE_TAG"
 
