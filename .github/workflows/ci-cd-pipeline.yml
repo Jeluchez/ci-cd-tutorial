@@ -8,6 +8,7 @@ permissions:
   id-token: write
   contents: read
 
+
 env:
   AWS_REGION: us-east-1
 
@@ -18,7 +19,7 @@ jobs:
       - name: Check Out
         uses: actions/checkout@v2
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
