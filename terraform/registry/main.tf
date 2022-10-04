@@ -1,11 +1,15 @@
 terraform {
+
+  backend "s3" { /* See the backend config in config/backend-config.tf */ }
   required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = ">= 4.0"
     }
+
   }
 }
+
 
 variable "registry_name" {
   type = string
@@ -16,10 +20,9 @@ variable "aws_region" {
 }
 
 provider "aws" {
-  region     = var.aws_region
- shared_credentials_files = ["/Users/LABRADOR/.aws/credentials"]
+  region                   = var.aws_region
+  shared_credentials_files = ["/Users/joseluis.sanchez/.aws/credentials"]
 }
-
 resource "aws_ecr_repository" "my_ecr_repo" {
   name                 = var.registry_name
   image_tag_mutability = "MUTABLE"
