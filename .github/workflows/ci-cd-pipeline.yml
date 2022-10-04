@@ -54,10 +54,20 @@ jobs:
       with:
         role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
         aws-region: ${{ env.AWS_REGION }}
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: ${{ needs.registry.outputs.repository-name }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
     - name: Image build and push
       id: docker-build
       run: |
-        export IMAGE_TAG=sha-$(git rev-parse --short HEAD)
+        export IMAGE_TAG=${{ steps.meta.outputs.tags }}
         
         echo "$IMAGE_TAG"
 
