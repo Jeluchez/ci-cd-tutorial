@@ -49,10 +49,10 @@ jobs:
       REPOSITORY_NAME: ${{ needs.registry.outputs.repository-name }}
       ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
     steps:
-    - name: Check Out
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+    # - name: Check Out
+    #   uses: actions/checkout@v3
+    #   with:
+    #     fetch-depth: 0
     - name: Image build and push
       id: docker-build
       run: |
