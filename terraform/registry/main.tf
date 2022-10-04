@@ -10,7 +10,6 @@ terraform {
   }
 }
 
-
 variable "registry_name" {
   type = string
 }
