@@ -68,7 +68,7 @@ jobs:
       id: docker-build
       run: |
         export FULL_NAME_IMAGE=${{ steps.meta.outputs.tags }}
-        
+        export IMAGE_TAG=${{ steps.meta.outputs.tags }}
         echo "$FULL_NAME_IMAGE"
 
         export ACCOUNT_ID=$(aws sts get-caller-identity | jq -r .Account)
