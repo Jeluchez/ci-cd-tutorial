@@ -39,12 +39,12 @@ jobs:
           -input=false \
           -auto-approve
           export REPOSITORY_NAME=$(terraform output --raw repository_name)
-          echo "repository_name=$REPOSITORY_NAME" >> $GITHUB_ENV"    
+          echo "repository-name=$REPOSITORY_NAME" >> $GITHUB_OUTPUT    
   docker-build:
     runs-on: ubuntu-latest
     needs: [registry] 
     env:
-      REPOSITORY_NAME: "${{ env.repository_name }}"
+      REPOSITORY_NAME: ${{ needs.registry.outputs.repository-name }}
       ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
     steps:
     - name: Check Out
@@ -58,7 +58,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v4
       with:
-        images: ${{ env.repository_name }}
+        images: ${{ needs.registry.outputs.repository-name }}
         tags: |
           type=ref,event=branch
           type=ref,event=pr
