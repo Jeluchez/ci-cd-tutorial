@@ -1,6 +1,7 @@
 # define among other things, the task definition describes which container image to use.
 resource "aws_ecs_task_definition" "service_task_fargate" {
   network_mode             = "awsvpc"
+  family                   = var.service_name
   requires_compatibilities = ["FARGATE"]
   cpu                      = 256
   memory                   = 512
@@ -33,16 +34,11 @@ resource "aws_ecs_service" "ecs_service" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    security_groups  = var.ecs_service_security_groups
-    subnets          = var.subnets.*.id
+    security_groups  = [aws_security_group.ecs_tasks.id]
+    subnets          = data.aws_subnet_ids.private.ids
     assign_public_ip = false
   }
 
-  load_balancer {
-    target_group_arn = var.aws_alb_target_group_arn
-    container_name   = "${var.name}-container-${var.environment}"
-    container_port   = var.container_port
-  }
 }
 
 
