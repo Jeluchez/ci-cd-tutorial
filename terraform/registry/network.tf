@@ -1,22 +1,24 @@
 resource "aws_vpc" "main" {
-  cidr_block           = "10.0.0.0/16"
-  enable_dns_hostnames = true
+  cidr_block       = "10.0.0.0/16"
+  instance_tenancy = "default"
 }
 
 
 # use data source to get all avalablility zones in region
 data "aws_availability_zones" "available_zones" {}
 
-resource "aws_subnet" "private" {
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = var.private_subnet
-  availability_zone = data.aws_availability_zones.available_zones.names[0]
+resource "aws_subnet" "public1" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.public_subnet1
+  availability_zone       = "us-east-1a"
+  map_public_ip_on_launch = true
 }
 
-resource "aws_subnet" "public" {
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = var.public_subnet
-  availability_zone = data.aws_availability_zones.available_zones.names[1]
+resource "aws_subnet" "public2" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.public_subnet2
+  availability_zone       = "us-east-1b"
+  map_public_ip_on_launch = true
 }
 
 # gateway for access to from internet
@@ -35,8 +37,12 @@ resource "aws_route_table" "public" {
   }
 }
 
-resource "aws_route_table_association" "public" {
-  count          = length(var.public_subnet)
-  subnet_id      = aws_subnet.public.id
+resource "aws_route_table_association" "public_route_1" {
+  subnet_id      = aws_subnet.public1.id
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "public_route_2" {
+  subnet_id      = aws_subnet.public2.id
   route_table_id = aws_route_table.public.id
 }

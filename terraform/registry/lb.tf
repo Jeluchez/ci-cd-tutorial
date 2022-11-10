@@ -23,7 +23,7 @@ resource "aws_lb" "current" {
   name                       = "${var.service_name}-lb"
   load_balancer_type         = "application"
   security_groups            = [aws_security_group.alb.id]
-  subnets                    = ["${aws_subnet.public.id}", "${aws_subnet.private.id}"]
+  subnets                    = ["${aws_subnet.public1.id}", "${aws_subnet.public2.id}"]
   enable_deletion_protection = false
 }
 

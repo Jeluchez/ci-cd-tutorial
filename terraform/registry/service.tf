@@ -6,8 +6,8 @@ resource "aws_ecs_task_definition" "service_task_fargate" {
   cpu                      = 256
   memory                   = 512
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  task_role_arn            = aws_iam_role.ecs_task_role.arn
-  container_definitions    = <<DEFINITION
+  # task_role_arn            = aws_iam_role.ecs_task_role.arn
+  container_definitions = <<DEFINITION
   [
     {
       "name": "${var.service_name}",
@@ -23,7 +23,6 @@ resource "aws_ecs_task_definition" "service_task_fargate" {
       },
       "portMappings": [
         {
-          "protocol": "tcp",
           "containerPort": 3000,
           "hostPort": 3000
         }
@@ -37,13 +36,13 @@ resource "aws_ecs_service" "ecs_service" {
   name            = "${var.service_name}-service"
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.service_task_fargate.arn
-  desired_count   = 1
+  desired_count   = 3
   launch_type     = "FARGATE"
 
   network_configuration {
     security_groups  = [aws_security_group.ecs_tasks.id]
-    subnets          = ["${aws_subnet.public.id}", "${aws_subnet.private.id}"]
-    assign_public_ip = false
+    subnets          = ["${aws_subnet.public1.id}", "${aws_subnet.public2.id}"]
+    assign_public_ip = true
   }
 
 }
