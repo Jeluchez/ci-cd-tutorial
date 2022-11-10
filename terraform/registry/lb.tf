@@ -7,7 +7,7 @@ module "lb_security_group_public" {
   name            = "fargate-allow-alb-traffic"
   use_name_prefix = false
   description     = "Security group for example usage with ALB"
-  vpc_id          = data.aws_vpc.main.id
+  vpc_id          = aws_vpc.main.id
 
   ingress_cidr_blocks      = ["0.0.0.0/0"]
   ingress_ipv6_cidr_blocks = ["::/0"]
@@ -23,7 +23,7 @@ resource "aws_lb" "current" {
   name                       = "${var.service_name}-lb"
   load_balancer_type         = "application"
   security_groups            = [aws_security_group.alb.id]
-  subnets                    = data.aws_subnet_ids.public.ids
+  subnets                    = ["${aws_subnet.public.id}", "${aws_subnet.private.id}"]
   enable_deletion_protection = false
 }
 
@@ -42,7 +42,7 @@ resource "aws_alb_target_group" "target_group" {
   name        = "${var.service_name}-tg"
   port        = 80
   protocol    = "HTTP"
-  vpc_id      = data.aws_vpc.main.id
+  vpc_id      = aws_vpc.main.id
   target_type = "ip"
   health_check {
     healthy_threshold   = "3"

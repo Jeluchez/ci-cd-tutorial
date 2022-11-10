@@ -35,7 +35,7 @@ resource "aws_ecs_service" "ecs_service" {
 
   network_configuration {
     security_groups  = [aws_security_group.ecs_tasks.id]
-    subnets          = data.aws_subnet_ids.private.ids
+    subnets          = ["${aws_subnet.public.id}", "${aws_subnet.private.id}"]
     assign_public_ip = false
   }
 

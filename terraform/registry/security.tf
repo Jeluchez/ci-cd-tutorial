@@ -1,6 +1,6 @@
 resource "aws_security_group" "alb" {
   name   = "${var.service_name}-sg-alb"
-  vpc_id = data.aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
   ingress {
     protocol         = "tcp"
     from_port        = 80
@@ -20,7 +20,7 @@ resource "aws_security_group" "alb" {
 
 resource "aws_security_group" "ecs_tasks" {
   name   = "${var.service_name}-sg-ecs-tasks"
-  vpc_id = data.aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
   ingress {
     protocol    = "tcp"
     from_port   = 3000

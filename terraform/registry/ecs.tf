@@ -1,5 +1,5 @@
 resource "aws_ecs_cluster" "cluster" {
-  name = "${service_name}-ecs"
+  name = "${var.service_name}-ecs"
   setting {
     name  = "containerInsights"
     value = "enabled"
