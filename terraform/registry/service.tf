@@ -6,8 +6,8 @@ resource "aws_ecs_task_definition" "service_task_fargate" {
   cpu                      = 256
   memory                   = 512
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  # task_role_arn            = aws_iam_role.ecs_task_role.arn
-  container_definitions = <<DEFINITION
+  task_role_arn            = aws_iam_role.ecs_task_role.arn
+  container_definitions    = <<DEFINITION
   [
     {
       "name": "${var.service_name}",
@@ -32,16 +32,22 @@ resource "aws_ecs_task_definition" "service_task_fargate" {
   DEFINITION
 }
 
+#  service definition that makes the task in the cluster accessible to the external world.
 resource "aws_ecs_service" "ecs_service" {
   name            = "${var.service_name}-service"
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.service_task_fargate.arn
-  desired_count   = 3
+  desired_count   = 1
   launch_type     = "FARGATE"
 
+  load_balancer {
+    target_group_arn = aws_lb_target_group.my_app.arn
+    container_name   = var.service_name
+    container_port   = 3000
+  }
   network_configuration {
-    security_groups  = [aws_security_group.ecs_tasks.id]
-    subnets          = ["${aws_subnet.public1.id}", "${aws_subnet.public2.id}"]
+    security_groups  = [aws_security_group.lb.id]
+    subnets          = [aws_subnet.public1.id, aws_subnet.public2.id]
     assign_public_ip = true
   }
 
