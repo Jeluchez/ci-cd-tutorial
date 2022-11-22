@@ -10,14 +10,14 @@ data "aws_availability_zones" "available_zones" {}
 resource "aws_subnet" "public1" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.public_subnet1
-  availability_zone       = "us-east-1b"
+  availability_zone       = data.aws_availability_zones.available.names[0]
   map_public_ip_on_launch = true
 }
 
 resource "aws_subnet" "public2" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.public_subnet2
-  availability_zone       = "us-east-1c"
+  availability_zone       = data.aws_availability_zones.available.names[1]
   map_public_ip_on_launch = true
 }
 
