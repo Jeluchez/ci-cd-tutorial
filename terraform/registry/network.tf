@@ -5,7 +5,7 @@ resource "aws_vpc" "main" {
 
 
 # use data source to get all avalablility zones in region
-data "aws_availability_zones" "available_zones" {}
+data "aws_availability_zones" "available" {}
 
 resource "aws_subnet" "public1" {
   vpc_id                  = aws_vpc.main.id
