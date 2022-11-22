@@ -14,16 +14,14 @@ resource "aws_lb_target_group" "my_app" {
     unhealthy_threshold = "2"
   }
 }
+
 resource "aws_lb" "my_app" {
-  name                       = "my-app-lb"
-  internal                   = false
-  load_balancer_type         = "application"
+  name               = "my_app"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.lb.id, aws_security_group.https.id]
+  subnets            = [aws_subnet.public1.id, aws_subnet.public2.id]
   enable_deletion_protection = false
-  subnets = [
-    aws_subnet.public1.id,
-    aws_subnet.public2.id
-  ]
-  security_groups = [aws_security_group.lb.id]
 }
 resource "aws_lb_listener" "my_app_http" {
   load_balancer_arn = aws_lb.my_app.arn

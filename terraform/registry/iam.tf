@@ -13,24 +13,27 @@ resource "aws_iam_role" "ecs_task_execution_role" {
     }]
   })
 }
+
+
 resource "aws_iam_role" "ecs_task_role" {
   name = "${var.service_name}-ecsTaskRole"
-
-  assume_role_policy = <<EOF
-    {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-          "Action": "sts:AssumeRole",
-          "Principal": {
-            "Service": "ecs-tasks.amazonaws.com"
-          },
-          "Effect": "Allow",
-          "Sid": ""
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
         }
-      ]
-    }
-  EOF
+      },
+    ]
+  })
+  # Esta política otorga a las instancias los permisos necesarios para la funcionalidad principal de Systems Manager.
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  ]
 }
 
 resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {

@@ -15,7 +15,7 @@ resource "aws_ecs_task_definition" "service_task_fargate" {
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/aws/ecs/${var.service_name}",
+          "awslogs-group": "/ecs/${var.service_name}",
           "awslogs-region": "${var.aws_region}",
           "awslogs-create-group": "true",
           "awslogs-stream-prefix": "${var.service_name}"
@@ -25,6 +25,7 @@ resource "aws_ecs_task_definition" "service_task_fargate" {
         {
           "containerPort": 3000,
           "hostPort": 3000
+          "protocol": "tcp"
         }
       ]
     }
