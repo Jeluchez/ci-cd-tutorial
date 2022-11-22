@@ -48,7 +48,7 @@ resource "aws_ecs_service" "ecs_service" {
     container_port   = 3000
   }
   network_configuration {
-    security_groups  = [aws_security_group.lb.id, aws_security_group.https.id]
+    security_groups  = [aws_security_group.lb.id, aws_security_group.ecs_tasks.id]
     subnets          = [aws_subnet.public1.id, aws_subnet.public2.id]
     assign_public_ip = true
   }

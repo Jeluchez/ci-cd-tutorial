@@ -1,3 +1,25 @@
+module "lb_security_group_public" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~> 4.8.0"
+
+  // the fargate ENI will use this security group
+  // it also needs access to the ALB to allow traffic
+  name            = "fargate-allow-alb-traffic"
+  use_name_prefix = false
+  description     = "Security group for example usage with ALB"
+  vpc_id          = data.aws_vpc.main.id
+
+  ingress_cidr_blocks      = ["0.0.0.0/0"]
+  ingress_ipv6_cidr_blocks = ["::/0"]
+  ingress_rules            = ["http-80-tcp"]
+  egress_rules             = ["all-all"]
+
+  tags                 = {
+    Terraform 	=  true
+  }
+}
+
+
 resource "aws_lb_target_group" "my_app" {
   name        = "${var.service_name}-tg"
   port        = 80
@@ -19,7 +41,7 @@ resource "aws_lb" "my_app" {
   name               = "myApp"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.lb.id, aws_security_group.https.id]
+  security_groups    = [aws_security_group.lb.id]
   subnets            = [aws_subnet.public1.id, aws_subnet.public2.id]
   enable_deletion_protection = false
 }
