@@ -26,3 +26,8 @@ variable "public_subnet2" {
   description = "This configures the prublic subnet cidr"
   default     = "10.0.2.0/24"
 }
+
+variable "domain_name"{
+  type =  string
+  default = "myapp-1409601444.us-east-1.elb.amazonaws.com"
+}
