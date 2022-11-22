@@ -71,7 +71,7 @@ resource "aws_lb_listener" "my_app_https" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
- certificate_arn    = aws_acm_certificate.my_cert.arn
+  certificate_arn = aws_acm_certificate_validation.my_cert_validation.certificate_arn
 
   default_action {
     type             = "forward"
@@ -79,10 +79,10 @@ resource "aws_lb_listener" "my_app_https" {
   }
 }
 
-resource "aws_lb_listener_certificate" "certificate_https" {
-  listener_arn    = aws_lb_listener.my_app_https.arn
-  certificate_arn = aws_acm_certificate.my_cert.arn
-}
+# resource "aws_lb_listener_certificate" "certificate_https" {
+#   listener_arn    = aws_lb_listener.my_app_https.arn
+#   certificate_arn = aws_acm_certificate.my_cert.arn
+# }
 output "lb_url" {
   value = "http://${aws_lb.my_app.dns_name}"
 }
