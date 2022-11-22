@@ -19,7 +19,6 @@ resource "aws_route53_record" "cert_dns" {
   type = tolist(aws_acm_certificate.my_cert.domain_validation_options)[0].resource_record_type
   zone_id = aws_route53_zone.public.id
   ttl = 60
-  provider = aws.account_route53
 }
 
 
