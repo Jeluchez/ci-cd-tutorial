@@ -1,8 +1,6 @@
 
 resource "aws_route53_zone" "public" {
   name = var.domain_name
-    private_zone = false
-  provider     = aws.account_route53
 }
 
 # create Certificate
@@ -34,7 +32,6 @@ resource "aws_route53_record" "my_app" {
     zone_id                = aws_alb.my_app.zone_id
     evaluate_target_health = false
   }
-  provider = aws.account_route53
 }
 
 output "testing" {
